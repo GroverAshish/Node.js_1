@@ -8,7 +8,7 @@ var conn = require('./database');
 
 app.get('/:id', (req, res) => {
 
-  let sql = `SELECT * FROM user_table WHERE id = ${req.params.id}`
+  let sql = `SELECT A.id, A.First_Name, A.Last_Name, A.Phone_num, A.Email, B.Type, B.Tot_Amount FROM user_database.user_table as A, (SELECT Type, sum(Amount) As Tot_Amount FROM user_database.transaction_table WHERE user_id = ${req.params.id} GROUP BY Type) as B WHERE id = ${req.params.id};`
 
   conn.query(sql, function(err,res){
     if(err)throw err;
